@@ -1,4 +1,3 @@
-import numpy as np
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -29,7 +28,7 @@ def load_tokens_from_file(file_name):
 russian_stopwords = stopwords.words('russian')
 
 
-processed_articles = load_tokens_from_file("tokens.json")
+processed_articles = load_tokens_from_file("../tokens.json")
 article_links = list(processed_articles.keys())  
 article_texts = list(processed_articles.values())  
 

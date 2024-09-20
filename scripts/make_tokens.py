@@ -57,8 +57,8 @@ def save_tokens_to_file(article_tokens, file_name):
         json.dump(article_tokens, file, ensure_ascii=False, indent=4)
 
 # Загрузка и обработка статей
-articles = load_articles_from_csv("links.csv")
+articles = load_articles_from_csv("../links.csv")
 processed_articles = {link: preprocess_text(text) for link, text in articles.items()}
 
 # Сохранение токенов в файл
-save_tokens_to_file(processed_articles, "tokens.json")
+save_tokens_to_file(processed_articles, "../tokens.json")
