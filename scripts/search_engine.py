@@ -1,28 +1,32 @@
 import json
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import stopwords
 
 
-
 class ArticleSearch:
-    def __init__(self, filename):
+    def __init__(self, filename: str, n_components: int):
         self.processed_articles = load_tokens_from_file(filename)
         self.russian_stopwords = stopwords.words('russian')
         self.vectorizer = TfidfVectorizer(tokenizer=word_tokenize, stop_words=self.russian_stopwords)
         self.vectorized_articles = self.vectorizer.fit_transform(list(self.processed_articles.values()))
+        self.lsa_processor = TruncatedSVD(n_components=n_components)
+        self.lsa_processed_articles = self.lsa_processor.fit_transform(self.vectorized_articles)
 
     def find_articles(self, user_query):
         answer = []
         processed_query = preprocess_text(user_query, self.russian_stopwords)
+
         query_vector = self.vectorizer.transform([processed_query])
-        similarities = cosine_similarity(query_vector, self.vectorized_articles)
+        query_vector_lsa = self.lsa_processor.transform(query_vector)
+        similarities = cosine_similarity(query_vector_lsa, self.lsa_processed_articles)
 
         for idx, similarity in enumerate(similarities[0]):
-            if similarity > 0.08:
+            if similarity > 0.4:
                 answer.append(list(self.processed_articles.keys())[idx])
         print(answer)
         return answer
