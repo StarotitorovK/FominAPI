@@ -1,19 +1,11 @@
 import json
-
-import json
-import numpy as np
-import requests
-from bs4 import BeautifulSoup
 import re
-import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import stopwords
-import pandas as pd
-import time
+
 
 
 class ArticleSearch:
@@ -32,7 +24,7 @@ class ArticleSearch:
         for idx, similarity in enumerate(similarities[0]):
             if similarity > 0.08:
                 answer.append(list(self.processed_articles.keys())[idx])
-
+        print(answer)
         return answer
 
 
