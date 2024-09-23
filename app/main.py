@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from faq_rag.rag_model import qa_chain
 from scripts.search_engine import ArticleSearch
 
 app = FastAPI()
@@ -14,4 +15,5 @@ def get_article(question: str):
 
 @app.get("/faq")
 def get_article(question: str):
-    return {"answer": "I'm alive! You asked: " + question}
+    answer = qa_chain.invoke(question)
+    return {"answer": answer}
